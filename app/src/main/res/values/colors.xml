@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="primary_blue">#2196F3</color>
+    <color name="disabled_gray">#CCCCCC</color>
+    <color name="background_gray">#F5F5F5</color>
+    <color name="paid_gold">#FFD700</color>
+    <color name="overlay_black">#80000000</color>
+    
+    <!-- New colors for dark theme -->
+    <color name="dark_background">#1A1A1A</color>
+    <color name="tab_selected">#FFD700</color>
+    <color name="tab_unselected">#333333</color>
+</resources>

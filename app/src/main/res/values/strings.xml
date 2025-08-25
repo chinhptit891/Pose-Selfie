@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pose Selfie</string>
+    <string name="ideas_count_format">%d ideas</string>
+    <string name="back">Back</string>
+    <string name="no_images_found">No images found</string>
+    <string name="pose_image">Pose image</string>
+
+    <!-- Missing strings -->
+    <string name="my_collection">My Collection</string>
+    <string name="tab_all">All</string>
+    <string name="tab_popular">Popular</string>
+    <string name="tab_new">New</string>
+    <string name="category_image_description">Category image</string>
+    <string name="try_it">Let\'s Selfie</string>
+</resources>
