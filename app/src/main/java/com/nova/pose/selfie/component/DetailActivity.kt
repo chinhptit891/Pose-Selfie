@@ -1,5 +1,6 @@
 package com.nova.pose.selfie.component
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -8,13 +9,13 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.nova.pose.selfie.base.BaseActivity
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.nova.pose.selfie.R
 import com.nova.pose.selfie.adapter.ImageAdapter
 import com.nova.pose.selfie.model.DetalResponse
 import com.nova.pose.selfie.model.ImagesItem
+import kotlin.jvm.java
 
 class DetailActivity : BaseActivity() {
 
@@ -28,6 +29,7 @@ class DetailActivity : BaseActivity() {
     private lateinit var imageAdapter: ImageAdapter
 
     private lateinit var imagesItem: ImagesItem
+    private lateinit var tvTryIt: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +48,7 @@ class DetailActivity : BaseActivity() {
         progressBar = findViewById(R.id.progressBar)
         tvEmpty = findViewById(R.id.tvEmpty)
         imgBackground = findViewById(R.id.imgBackground)
+        tvTryIt = findViewById(R.id.tryit)
     }
 
     private fun setupRecyclerView() {
@@ -59,6 +62,17 @@ class DetailActivity : BaseActivity() {
         rvImages.apply {
             adapter = imageAdapter
         }
+
+        tvTryIt.setOnClickListener {
+            navigateCamera(imagesItem)
+        }
+    }
+
+    fun navigateCamera(imagesItem: ImagesItem) {
+        val intent = Intent(this, CamActivity::class.java).apply {
+            putExtra("IMAGE_ITEM", imagesItem)
+        }
+        startActivity(intent)
     }
 
     private fun setupBackButton() {

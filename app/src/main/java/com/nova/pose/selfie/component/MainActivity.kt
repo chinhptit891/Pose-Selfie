@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.Toast
 import com.nova.pose.selfie.base.BaseActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -25,6 +26,7 @@ class MainActivity : BaseActivity() {
     private lateinit var btnAll: Button
     private lateinit var btnPopular: Button
     private lateinit var btnNew: Button
+    private lateinit var btnCollection: LinearLayout
     private lateinit var categoryAdapter: CategoryAdapter
 
     private var allCategories: List<DataItem> = emptyList()
@@ -45,6 +47,7 @@ class MainActivity : BaseActivity() {
         btnAll = findViewById(R.id.btnAll)
         btnPopular = findViewById(R.id.btnPopular)
         btnNew = findViewById(R.id.btnNew)
+        btnCollection = findViewById(R.id.btn_collection)
     }
 
     private fun setupRecyclerView() {
@@ -100,6 +103,11 @@ class MainActivity : BaseActivity() {
         btnNew.setOnClickListener {
             setNewMode()
         }
+
+        btnCollection.setOnClickListener {
+            val intent = Intent(this, CollectionActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun setAllMode() {
@@ -147,18 +155,19 @@ class MainActivity : BaseActivity() {
             "new" -> btnNew.isSelected = true
         }
     }
-    
+
     private fun fetchRelatedImages(category: DataItem) {
         Log.d("MainActivity", "Fetching related images for category: ${category.id}")
-        
+
         // Show loading indicator if needed
-        
+
         // Create request body with category ID in an array as shown in the example
         val request = RelatedImagesRequest(categoryIds = listOf(category.id))
-        
-        ApiClient.apiService.getRelatedImages(request)
-            .enqueue(object : Callback<DetalResponse> {
-                override fun onResponse(call: Call<DetalResponse>, response: Response<DetalResponse>) {
+
+        ApiClient.apiService.getRelatedImages(request).enqueue(object : Callback<DetalResponse> {
+                override fun onResponse(
+                    call: Call<DetalResponse>, response: Response<DetalResponse>
+                ) {
                     if (response.isSuccessful) {
                         val detailResponse = response.body()
                         if (detailResponse != null && detailResponse.success) {
@@ -167,35 +176,31 @@ class MainActivity : BaseActivity() {
                         } else {
                             // Handle unsuccessful response
                             Toast.makeText(
-                                this@MainActivity,
-                                "Failed to load images",
-                                Toast.LENGTH_SHORT
+                                this@MainActivity, "Failed to load images", Toast.LENGTH_SHORT
                             ).show()
                             Log.e("MainActivity", "API response not successful: ${response.code()}")
                         }
                     } else {
                         // Handle error response
                         Toast.makeText(
-                            this@MainActivity,
-                            "Error: ${response.code()}",
-                            Toast.LENGTH_SHORT
+                            this@MainActivity, "Error: ${response.code()}", Toast.LENGTH_SHORT
                         ).show()
-                        Log.e("MainActivity", "API error: ${response.code()} - ${response.message()}")
+                        Log.e(
+                            "MainActivity", "API error: ${response.code()} - ${response.message()}"
+                        )
                     }
                 }
 
                 override fun onFailure(call: Call<DetalResponse>, t: Throwable) {
                     // Handle network failure
                     Toast.makeText(
-                        this@MainActivity,
-                        "Network error: ${t.message}",
-                        Toast.LENGTH_SHORT
+                        this@MainActivity, "Network error: ${t.message}", Toast.LENGTH_SHORT
                     ).show()
                     Log.e("MainActivity", "API call failed", t)
                 }
             })
     }
-    
+
     private fun navigateToDetailActivity(category: DataItem, response: DetalResponse) {
         val intent = Intent(this, DetailActivity::class.java).apply {
             putExtra("CATEGORY_NAME", category.name)
