@@ -13,4 +13,6 @@
     <string name="tab_new">New</string>
     <string name="category_image_description">Category image</string>
     <string name="try_it">Let\'s Selfie</string>
+    <string name="edit_photo">Remove Background</string>
+    <string name="done">Done</string>
 </resources>

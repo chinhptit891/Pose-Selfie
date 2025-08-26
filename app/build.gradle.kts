@@ -64,4 +64,7 @@ dependencies {
     
     // ExifInterface for image orientation handling
     implementation("androidx.exifinterface:exifinterface:1.3.7")
+
+    // ML Kit Selfie Segmentation for background removal
+    implementation("com.google.mlkit:segmentation-selfie:16.0.0-beta6")
 }

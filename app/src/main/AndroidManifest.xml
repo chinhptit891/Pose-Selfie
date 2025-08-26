@@ -28,9 +28,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PoseSelfie">
         <activity
-            android:name=".component.ResultActivityActivity"
+            android:name=".component.EditActivity"
             android:exported="false" />
-        <!-- FileProvider for sharing images -->
+        <activity
+            android:name=".component.ResultActivityActivity"
+            android:exported="false" /> <!-- FileProvider for sharing images -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"

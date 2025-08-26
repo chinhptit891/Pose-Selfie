@@ -1,5 +1,6 @@
 package com.nova.pose.selfie.utils
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -117,7 +118,7 @@ object ImageCacheUtils {
         }
     }
 
-    fun getOutputMediaFile(activity: CamActivity): File {
+    fun getOutputMediaFile(activity: Activity): File {
 
         val timeStamp = System.currentTimeMillis()
         return File(activity.filesDir, "IMG_" + timeStamp + ".jpg")

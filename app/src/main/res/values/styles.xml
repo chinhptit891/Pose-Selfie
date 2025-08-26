@@ -15,4 +15,9 @@
         <item name="android:backgroundDimAmount">0.7</item>
         <item name="android:windowAnimationStyle">@style/DialogAnimation</item>
     </style>
+
+    <style name="corner_12dp">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
 </resources>

@@ -1,11 +1,14 @@
 package com.nova.pose.selfie.component
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import com.nova.pose.selfie.base.BaseActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +22,7 @@ import com.nova.pose.selfie.utils.JsonUtils
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.jvm.java
 
 class MainActivity : BaseActivity() {
 
@@ -29,6 +33,9 @@ class MainActivity : BaseActivity() {
     private lateinit var btnCollection: LinearLayout
     private lateinit var categoryAdapter: CategoryAdapter
 
+    private lateinit var btnEditPhoto: LinearLayout
+    private lateinit var pickImageLauncher: ActivityResultLauncher<String>
+
     private var allCategories: List<DataItem> = emptyList()
     private var currentMode: String = "all"
 
@@ -37,6 +44,7 @@ class MainActivity : BaseActivity() {
         setContentViewWithInsets(R.layout.activity_main, R.id.main)
 
         initViews()
+        initPickImage()
         setupRecyclerView()
         loadCategoriesFromAssets()
         setupTabButtons()
@@ -48,6 +56,7 @@ class MainActivity : BaseActivity() {
         btnPopular = findViewById(R.id.btnPopular)
         btnNew = findViewById(R.id.btnNew)
         btnCollection = findViewById(R.id.btn_collection)
+        btnEditPhoto = findViewById(R.id.btnEditPhoto)
     }
 
     private fun setupRecyclerView() {
@@ -60,12 +69,7 @@ class MainActivity : BaseActivity() {
         val layoutManager = GridLayoutManager(this, 2)
         layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
-                // Theo yêu cầu:
-                // Position 0: full width (span=2)
-                // Position 1: half width (span=1)
-                // Position 2: half width (span=1)
-                // Position 3: full width (span=2)
-                // Position 4+: all half width (span=1)
+
                 return when (position) {
                     0, 3 -> 2  // Chỉ vị trí 0 và 3 chiếm full width
                     else -> 1  // Các vị trí còn lại chiếm half width
@@ -76,6 +80,18 @@ class MainActivity : BaseActivity() {
         rvCategories.apply {
             this.layoutManager = layoutManager
             adapter = categoryAdapter
+        }
+    }
+
+    private fun initPickImage() {
+        pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            if (uri != null) {
+                val intent = Intent(this, EditActivity::class.java)
+                intent.putExtra("IMAGE_URI", uri.toString())
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -108,6 +124,8 @@ class MainActivity : BaseActivity() {
             val intent = Intent(this, CollectionActivity::class.java)
             startActivity(intent)
         }
+
+        btnEditPhoto.setOnClickListener { pickImageLauncher.launch("image/*") }
     }
 
     private fun setAllMode() {
